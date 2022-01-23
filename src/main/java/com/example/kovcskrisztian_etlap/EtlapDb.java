@@ -27,4 +27,22 @@ public class EtlapDb {
         }
         return etlapok;
     }
+
+    public int etlaphozzaAdasa(String nev, String leiras, String kategoria, int ar) throws SQLException {
+        String sql="INSERT INTO etlap(nev,leiras,kategoria,ar) VALUES(?,?,?,?)";
+        PreparedStatement stmt=conn.prepareStatement(sql);
+        stmt.setString(1,nev);
+        stmt.setString(2,leiras);
+        stmt.setString(3,kategoria);
+        stmt.setInt(4,ar);
+        return stmt.executeUpdate();
+    }
+
+    public boolean etlapTorlese(int id) throws SQLException {
+        String sql="DELETE FROM etlap WHERE id=?";
+        PreparedStatement stmt=conn.prepareStatement(sql);
+        stmt.setInt(1,id);
+        int erintettSorok= stmt.executeUpdate();
+        return erintettSorok==1;
+    }
 }

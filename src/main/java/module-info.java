@@ -6,4 +6,6 @@ module com.example.kovcskrisztian_etlap {
 
     opens com.example.kovcskrisztian_etlap to javafx.fxml;
     exports com.example.kovcskrisztian_etlap;
+    exports com.example.kovcskrisztian_etlap.controlls;
+    opens com.example.kovcskrisztian_etlap.controlls to javafx.fxml;
 }
