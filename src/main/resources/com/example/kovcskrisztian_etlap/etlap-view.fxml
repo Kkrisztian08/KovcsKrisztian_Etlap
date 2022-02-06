@@ -41,7 +41,11 @@
                         <Button mnemonicParsing="false" onAction="#onEmelesForintClick" text="Emelés" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
                             <children>
-                                <Spinner />
+                                <Spinner fx:id="inputNovelSzazalek">
+                                    <valueFactory>
+                                        <SpinnerValueFactory.IntegerSpinnerValueFactory amountToStepBy="5" max="50" min="5" />
+                                    </valueFactory>
+                                </Spinner>
                                 <Label text="\%">
                                     <font>
                                         <Font size="14.0" />
@@ -51,7 +55,11 @@
                         </HBox>
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.rowIndex="1">
                             <children>
-                                <Spinner />
+                                <Spinner fx:id="inputNovelForint">
+                                    <valueFactory>
+                                        <SpinnerValueFactory.IntegerSpinnerValueFactory amountToStepBy="50" max="3000" min="50" />
+                                    </valueFactory>
+                                </Spinner>
                                 <Label text="Ft">
                                     <font>
                                         <Font size="14.0" />
