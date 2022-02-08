@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.collections.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -39,21 +37,10 @@
             <Insets right="10.0" />
          </GridPane.margin>
         </Spinner>
-        <ChoiceBox fx:id="inputKategoria" minWidth="100.0" prefWidth="200.0" value="főétel" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2">
-            <items>
-                <FXCollections fx:factory="observableArrayList">
-                    <String fx:value="főétel" />
-                    <String fx:value="előétel" />
-                    <String fx:value="desszert" />
-                </FXCollections>
-            </items>
-         <GridPane.margin>
-            <Insets right="10.0" />
-         </GridPane.margin>
-        </ChoiceBox>
-        <Button minWidth="100.0" mnemonicParsing="false" onAction="#onUjFelveteleClick" prefHeight="26.0" prefWidth="310.0" text="Hozzáadás" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4">
+        <Button minWidth="100.0" mnemonicParsing="false" onAction="#onUjFelvetele" prefHeight="26.0" prefWidth="310.0" text="Hozzáadás" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4">
          <GridPane.margin>
             <Insets bottom="5.0" left="10.0" right="10.0" />
          </GridPane.margin></Button>
+      <ComboBox fx:id="selectKategoria" prefHeight="25.0" prefWidth="190.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
     </children>
 </GridPane>

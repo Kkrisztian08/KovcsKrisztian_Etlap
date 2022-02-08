@@ -11,30 +11,31 @@ public class EtlapDb {
         this.conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/etlapdb", "root", "");
     }
 
+    //étlappal kapcsolatos metodusok
     public List<Etlap> getEtlap() throws SQLException {
-        List<Etlap> etlapok = new ArrayList<>();
+        List<Etlap> etlapLista = new ArrayList<>();
         Statement stmt = conn.createStatement();
-        String sql = "SELECT * FROM etlap";
+        String sql = "SELECT * FROM etlap INNER JOIN kategoria ON kategoria.id = etlap.kategoria_id;";
         ResultSet result = stmt.executeQuery(sql);
-        while (result.next()) {
+        while (result.next()){
             int id = result.getInt("id");
-            String nev = result.getString("nev");
+            String nev = result.getString("etlap.nev");
             String leiras = result.getString("leiras");
+            String kategoria = result.getString("kategoria.nev");
             int ar = result.getInt("ar");
-            String kategoria = result.getString("kategoria");
-            Etlap etlap = new Etlap(id, nev, leiras, ar, kategoria);
-            etlapok.add(etlap);
+            Etlap etel = new Etlap(id, nev,leiras,ar ,kategoria );
+            etlapLista.add(etel);
         }
-        return etlapok;
+        return etlapLista;
     }
 
-    public int etlaphozzaAdasa(String nev, String leiras, String kategoria, int ar) throws SQLException {
-        String sql="INSERT INTO etlap(nev,leiras,kategoria,ar) VALUES(?,?,?,?)";
-        PreparedStatement stmt=conn.prepareStatement(sql);
+    public int etlaphozzaAdasa(String nev, String leiras, int ar, int  kategoria) throws SQLException {
+        String sql = "INSERT INTO etlap(nev, leiras, ar, kategoria_id) VALUES (?,?,?,?)";
+        PreparedStatement stmt = conn.prepareStatement(sql);
         stmt.setString(1,nev);
         stmt.setString(2,leiras);
-        stmt.setString(3,kategoria);
-        stmt.setInt(4,ar);
+        stmt.setInt(3,ar);
+        stmt.setInt(4,kategoria);
         return stmt.executeUpdate();
     }
 
@@ -45,7 +46,8 @@ public class EtlapDb {
         int erintettSorok= stmt.executeUpdate();
         return erintettSorok==1;
     }
-    public boolean etelEmelesForint(int id, int emeles) throws SQLException {
+
+    public boolean etelForintosEmelese(int id, int emeles) throws SQLException {
         String sql = "UPDATE etlap SET ar = ar + ? WHERE id = ?";
         PreparedStatement stmt = conn.prepareStatement(sql);
         stmt.setInt(1, emeles);
@@ -54,7 +56,7 @@ public class EtlapDb {
         return erintettSorok == 1;
     }
 
-    public boolean etelEmelesForintOsszes(int emeles) throws SQLException {
+    public boolean osszesEtelForintosEmelese(int emeles) throws SQLException {
         String sql = "UPDATE etlap SET ar = ar + ?";
         PreparedStatement stmt = conn.prepareStatement(sql);
         stmt.setInt(1, emeles);
@@ -62,7 +64,7 @@ public class EtlapDb {
         return erintettSorok == 1;
     }
 
-    public boolean etelEmelesSzazalek(int id, int szazalek) throws SQLException {
+    public boolean etelSzazalekosEmelese(int id, int szazalek) throws SQLException {
         String sql = "UPDATE etlap SET ar = ar * ((100 + ?) / 100) WHERE id = ?";
         PreparedStatement stmt = conn.prepareStatement(sql);
         stmt.setInt(1, szazalek);
@@ -71,11 +73,60 @@ public class EtlapDb {
         return erintettSorok == 1;
     }
 
-    public boolean etelEmelesSzazalekOsszes(int szazalek) throws SQLException {
+    public boolean osszesEtelSzazalekosEmelese(int szazalek) throws SQLException {
         String sql = "UPDATE etlap SET ar = ar * ((100 + ?) / 100)";
         PreparedStatement stmt = conn.prepareStatement(sql);
         stmt.setInt(1, szazalek);
         int erintettSorok = stmt.executeUpdate();
         return erintettSorok == 1;
     }
+
+    public List<Etlap> getSzurtEtlap(String szures) throws SQLException {
+        List<Etlap> etlapLista = new ArrayList<>();
+        String sql = "SELECT * FROM etlap JOIN kategoria ON kategoria.id = etlap.kategoria_id WHERE kategoria.nev = ?;";
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setString(1, szures);
+        ResultSet result = stmt.executeQuery();
+        while (result.next()){
+            int id = result.getInt("id");
+            String nev = result.getString("etlap.nev");
+            String leiras = result.getString("leiras");
+            String kategoria = result.getString("kategoria.nev");
+            int ar = result.getInt("ar");
+            Etlap etel = new Etlap(id, nev,leiras, ar, kategoria);
+            etlapLista.add(etel);
+        }
+        return etlapLista;
+    }
+
+    //kategóriákkal kapcsolatos metodusok
+    public List<Kategoria> getKategoria() throws SQLException {
+        List<Kategoria> kategoriaLista = new ArrayList<>();
+        Statement stmt = conn.createStatement();
+        String sql = "SELECT * FROM kategoria;";
+        ResultSet result = stmt.executeQuery(sql);
+        while (result.next()){
+            int id = result.getInt("id");
+            String nev = result.getString("nev");
+            Kategoria kategoria = new Kategoria(id, nev);
+            kategoriaLista.add(kategoria);
+        }
+        return kategoriaLista;
+    }
+
+    public boolean kategoriaTorlese(int id) throws SQLException {
+        String sql = "DELETE FROM kategoria WHERE id = ?";
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setInt(1, id);
+        int erintettSorok = stmt.executeUpdate();
+        return erintettSorok == 1;
+    }
+
+    public int kategoriaHozzaAdasa(String nev) throws SQLException {
+        String sql = "INSERT INTO kategoria(nev) VALUES (?)";
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setString(1,nev);
+        return stmt.executeUpdate();
+    }
+
 }

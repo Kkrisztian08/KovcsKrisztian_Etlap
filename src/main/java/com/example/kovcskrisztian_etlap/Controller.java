@@ -40,13 +40,6 @@ public abstract class Controller {
         alert.show();
     }
 
-    protected void alertWait(String uzenet) {
-        Alert alert = new Alert(Alert.AlertType.NONE);
-        alert.setContentText(uzenet);
-        alert.getButtonTypes().add(ButtonType.OK);
-        alert.showAndWait();
-    }
-
     protected boolean confirm(String uzenet){
         Alert alert=new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Biztos?");
